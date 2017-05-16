@@ -15,7 +15,7 @@ module Lita
           when "hello"
             handle_hello
           when "message"
-            handle_message
+            robot.trigger("slack_#{data['subtype']}", data) unless handle_message
           when "reaction_added", "reaction_removed"
             handle_reaction
           when "user_change", "team_join"
