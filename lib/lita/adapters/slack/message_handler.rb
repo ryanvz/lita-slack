@@ -10,12 +10,18 @@ module Lita
           @type = data["type"]
         end
 
+        def filetype
+          if data['files']
+            @filetype ||= data['files'][0]['filetype']
+          end
+        end
+
         def handle
           case type
           when "hello"
             handle_hello
           when "message"
-            robot.trigger("slack_#{data['subtype']}", data) unless handle_message
+            filetype == 'email' ? robot.trigger("slack_#{filetype}", data) : handle_message
           when "reaction_added", "reaction_removed"
             handle_reaction
           when "user_change", "team_join"
